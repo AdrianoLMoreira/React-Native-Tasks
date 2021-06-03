@@ -13,6 +13,7 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 
 import commonStyles from '../commonStyles'
+import { Alert } from 'react-native'
 
 export default props => {
 
@@ -44,12 +45,10 @@ export default props => {
 
     return (
         <Swipeable 
-            renderRightActions={getRightContent}
-            renderLeftActions={getLeftContent}
-            onSwipeableLeftOpen={() => props.onDelete && props.onDelete(props.id)}>
+            renderRightActions={getRightContent}>
             <View style={styles.container}>
                 <TouchableWithoutFeedback
-                    onPress={() => props.onToggleTask(props.id)}>
+                    onPress={() => props.toggleTask(props.id)}>
                     <View style={styles.checkContainer}>
                         {getCheckView(props.doneAt)}
                     </View>
