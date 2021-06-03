@@ -16,6 +16,7 @@ import moment from 'moment'
 import 'moment/locale/pt-br'
 
 import AddTask from './AddTask'
+import { Alert } from 'react-native'
 
 
 
@@ -50,6 +51,23 @@ export default class Tasklist extends Component{
         this.setState({ showDoneTasks: !this.state.showDoneTasks }, this.filterTasks)
     }
 
+    addTask = newTask => {
+        if(!newTask.desc || !newTask.desc.trim()){
+            Alert.alert('Dados Inválidos', 'Descrção não informada')
+            return
+        }
+
+        const tasks = [...this.state.tasks]
+        tasks.push({
+            id: Math.random(),
+            desc: newTask.desc,
+            estimateAt: newTask.date,
+            doneAt: null
+        })
+
+        this.setState({ tasks, showAddTask: false}, this.filterTasks)
+    }
+
     filterTasks = () => {
         let visibleTasks = null
         if(this.state.showDoneTasks){
@@ -78,7 +96,8 @@ export default class Tasklist extends Component{
         return(
             <View style={styles.container}>
                 <AddTask isVisible={this.state.showAddTask} 
-                           onCancel={() => this.setState( { showAddTask: false } )} />
+                           onCancel={() => this.setState( { showAddTask: false } )} 
+                           onSave={this.addTask}/>
                 <ImageBackground source={todayImg}
                 style={styles.background}>
                     <View style={styles.iconBar}>
