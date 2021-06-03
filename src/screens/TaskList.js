@@ -15,10 +15,13 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
+import AddTask from './AddTask'
+
 
 
 export default class Tasklist extends Component{
     state = {
+        showAddTask :false,
         showDoneTasks: true,
         visibleTasks: [],
         tasks: [{
@@ -74,6 +77,8 @@ export default class Tasklist extends Component{
         const today = moment().locale('pt-br').format('ddd, D [de] MMMM')
         return(
             <View style={styles.container}>
+                <AddTask isVisible={this.state.showAddTask} 
+                           onCancel={() => this.setState( { showAddTask: false } )} />
                 <ImageBackground source={todayImg}
                 style={styles.background}>
                     <View style={styles.iconBar}>
@@ -92,6 +97,12 @@ export default class Tasklist extends Component{
                         keyExtractor={item => `${item.id}`}
                         renderItem={({item}) => <Task {...item} toggleTask={this.toggleTask} />} />
                 </View>
+                <TouchableOpacity style={styles.addButton} 
+                    activeOpascity={0.4}
+                    onPress={() => this.setState({showAddTask: true})}>
+                    <Icon name="plus" size={20}
+                                    color={commonStyles.colors.secondary} />
+                </TouchableOpacity>
             </View>
         )
     }
@@ -134,6 +145,18 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         justifyContent: 'flex-end',
         marginTop: Platform.OS === 'ios' ? 50 : 10
+    },
+    addButton: {
+        position: 'absolute',
+        right: 30,
+        bottom: 30,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: commonStyles.colors.today,
+        justifyContent: 'center',
+        alignItems: 'center'
+
     }
    
 })
